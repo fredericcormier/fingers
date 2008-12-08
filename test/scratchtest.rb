@@ -1,5 +1,5 @@
-require File.join(File.expand_path(File.dirname(__FILE__)),'..','lib', 'tones')
-
+#require File.join(File.expand_path(File.dirname(__FILE__)),'..','lib', 'tones')
+require File.join(File.expand_path(File.dirname(__FILE__)),'..','lib', 'fretboard')
 include Tones
 
 puts c = Chord.new( "c", 1, "MAJ")
@@ -15,3 +15,14 @@ puts c13
 
 puts
 puts cmaj = Tones::Chord.new('c', 1, 'MAJ', Tones::SECOND)          # => G1 C2 E2
+
+
+
+
+
+
+s = IString.new('c', 3, 24)
+puts s
+stick = Fretboard.new(InstrumentDef::STICK_12_CLASSIC,'')
+puts
+puts stick.setOfStrings
