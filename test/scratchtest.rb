@@ -1,5 +1,5 @@
-#require File.join(File.expand_path(File.dirname(__FILE__)),'..','lib', 'tones')
 require File.join(File.expand_path(File.dirname(__FILE__)),'..','lib', 'fretboard')
+
 include Tones
 
 puts c = Chord.new( "c", 1, "MAJ")
