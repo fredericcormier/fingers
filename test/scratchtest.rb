@@ -5,6 +5,7 @@ include Tones
 puts c = Chord.new( "c", 1, :major)
 puts c.invert!(SECOND)
 c.invert!(FITH)
+
 puts c
 
 puts s = Tones::Scale.new( "F#",2, :mixolydian)

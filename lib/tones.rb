@@ -3,9 +3,10 @@
 # 
 require 'Logger'
 module Tones
+    
     path_to_logfile = File.join(File.expand_path(File.dirname(__FILE__)),'..','zings', 'log.txt')
     $log = Logger.new(path_to_logfile)
-    $log.level = Logger::WARN
+    $log.level = Logger::DEBUG
     
 	NOTE_SHARP  = %w[C C# D D# E F F# G G# A A# B ]
 	NOTE_FLAT 	= %w[C Db D Eb E F Gb G Ab A Bb B ]
@@ -178,8 +179,7 @@ module Tones
 		def initialize (n = 'C', o = 1)
 			@note 	= n.capitalize
 			@octave = o
-			@index 	= NOTES.index(@note)
-			$log.info "#{@note}#{@octave} created"					
+			@index 	= NOTES.index(@note)					
 		end
 		
 		# from comparable
