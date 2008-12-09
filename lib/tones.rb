@@ -1,8 +1,12 @@
 #
 #  Created by Frederic Cormier on 2008-06-02.
 # 
+require 'Logger'
 module Tones
-	
+    path_to_logfile = File.join(File.expand_path(File.dirname(__FILE__)),'..','zings', 'log.txt')
+    $log = Logger.new(path_to_logfile)
+    $log.level = Logger::WARN
+    
 	NOTE_SHARP  = %w[C C# D D# E F F# G G# A A# B ]
 	NOTE_FLAT 	= %w[C Db D Eb E F Gb G Ab A Bb B ]
 	
@@ -23,57 +27,61 @@ module Tones
 	FOURTH  = 4 
 	FITH	= 5  
 
-	TRIAD       = %w[MIN MAJ SUS4 DIM AUG]
-	QUAD        = %w[MAJ7 MIN7 7 7SUS4 MAJ6 MIN6 HALF-DIM7 DIM7 AUG7 MIN/MAJ ]
-	QUINTUPLE   = %w[MAJ9 MIN9 MIN6/9 9]
+	TRIAD       =   [:major, :minor, :sus4, :diminished, :augmented ]
+	
+	QUAD        =   [:major_7, :minor_7, :dominant_7, :seventh_sus4, :major_6, :minor_6,
+	                    :half_diminished_7,:diminished_7, :augmented_7, :minor_major ]
+	                    
+	QUINTUPLE   =   [:major_9, :minor_9, :major_6_9, :minor_6_9, :ninth ]
 		
-	SCALE_FORMULAS = {	
-		"MAJOR" => 	    	[0,2,4,5,7,9,11,12],
-		"NATURAL_MINOR"=>   [0,2,3,5,7,8,10,12],
-		"HARMONIC_MINOR"=>  [0,2,3,5,7,8,11,12],
-		"MELODIC_MINOR"=>   [0,2,3,5,7,9,11,12],
-		"IONIAN"=>          [0,2,4,5,7,9,11,12],
-		"DORIAN" =>         [0,2,3,5,7,9,10,12],
-		"PHRYGIAN"=>        [0,1,3,5,7,8,10,12],
-		"LYDIAN"=>          [0,2,4,6,7,9,11,12],
-		"MIXOLYDIAN"=>      [0,2,4,5,7,9,10,12],
-		"AEOLIAN"=>         [0,2,3,5,7,8,10,12],
-		"LOCRIAN"=>         [0,1,3,5,6,8,10,12],
-		"GYPSY_MINOR"=>     [0,2,3,6,7,8,11,12],
-		"WHOLE_TONE"=>      [0,2,4,6,8,10,12],
-		"MAJOR_PENTATONIC"=>[0,2,4,7,9,12],
-		"MINOR_PENTATONIC"=>[0,3,5,7,10,12]
+	SCALE_FORMULAS = {
+	    :chromatic =>           [0,1,2,3,4,5,6,7,8,9,10,11,12],
+		:major_scale => 	    [0,2,4,5,7,9,11,12],
+		:natural_minor =>       [0,2,3,5,7,8,10,12],
+		:harmonic_minor =>      [0,2,3,5,7,8,11,12],
+		:melodic_minor =>       [0,2,3,5,7,9,11,12],
+		:ionian =>              [0,2,4,5,7,9,11,12],
+		:dorian  =>             [0,2,3,5,7,9,10,12],
+		:phrygian =>            [0,1,3,5,7,8,10,12],
+		:lydian =>              [0,2,4,6,7,9,11,12],
+		:mixolydian =>          [0,2,4,5,7,9,10,12],
+		:aeolian =>             [0,2,3,5,7,8,10,12],
+		:locrian =>             [0,1,3,5,6,8,10,12],
+		:gypsy_minor =>         [0,2,3,6,7,8,11,12],
+		:whole_tone =>          [0,2,4,6,8,10,12],
+		:major_pentatonic =>    [0,2,4,7,9,12],
+		:minor_pentatonic =>    [0,3,5,7,10,12]
 
 	}
 
 
 	CHORD_FORMULAS ={   
-		"MAJ" =>          [0,4,7],
-		"MAJ6"=>          [0,4,7,9 ],
-		"MAJ7"=>          [0,4,7,11],
-		"MAJ9"=>          [0,4,7,11,14],
-		"MAJ6/9"=>        [0,4,7,9,14],
-		"MAJ11"=>         [0,4,7,11,14,17],
-		"MAJ13"=>         [0,4,7,11,14,17,21],
-		"MIN"=>           [0,3,7],
-		"MIN6"=>          [0,3,7,9],
-		"MIN7"=>          [0,3,7,10],
-		"MIN9"=>          [0,3,7,10,14],
-		"MIN6/9"=>        [0,3,7,9,14],
-		"MIN11"=>         [0,3,7,10,14,17],
-		"MIN13"=>         [0,3,7,10,14,17,21],
-		"7"=>             [0,4,7,10],
-		"9"=>             [0,4,7,10,14],
-		"11"=>            [0,4,7,10,14,17],
-		"13"=>            [0,4,7,10,14,17,21],
-		"DIM"=>           [0,3,6],
-		"HALF_DIM7"=>     [0,3,6,10],
-		"DIM7"=>          [0,3,6,9],
-		"AUG"=>           [0,4,8],
-		"AUG7"=>          [0,4,8,10],
-		"SUS4"=>          [0,5,7],
-		"7SUS4"=>         [0,5,7,10],
-		"MIN/MAJ"=>       [0,3,7,11]
+		:major =>               [0,4,7],
+		:major_6 =>             [0,4,7,9 ],
+		:major_7 =>             [0,4,7,11],
+		:major_9 =>             [0,4,7,11,14],
+		:major_6_9=>            [0,4,7,9,14],
+		:major_11 =>            [0,4,7,11,14,17],
+		:major_13 =>            [0,4,7,11,14,17,21],
+		:minor =>               [0,3,7],
+		:minor_6 =>             [0,3,7,9],
+		:minor_7 =>             [0,3,7,10],
+		:minor_9 =>             [0,3,7,10,14],
+		:minor_6_9 =>           [0,3,7,9,14],
+		:minor_11 =>            [0,3,7,10,14,17],
+		:minor_13 =>            [0,3,7,10,14,17,21],
+		:dominant_7=>           [0,4,7,10],
+		:ninth =>               [0,4,7,10,14],
+		:eleventh =>            [0,4,7,10,14,17],
+		:thirteenth =>          [0,4,7,10,14,17,21],
+		:diminished =>          [0,3,6],
+		:half_diminished_7 =>   [0,3,6,10],
+		:diminished_7 =>        [0,3,6,9],
+		:augmented =>           [0,4,8],
+		:augmented_7 =>         [0,4,8,10],
+		:sus4 =>                [0,5,7],
+		:seventh_sus4 =>        [0,5,7,10],
+		:minor_major =>         [0,3,7,11]
 	}
 	
 	#  	Note				Hz		cpspch	MIDI
@@ -170,7 +178,8 @@ module Tones
 		def initialize (n = 'C', o = 1)
 			@note 	= n.capitalize
 			@octave = o
-			@index 	= NOTES.index(@note)					
+			@index 	= NOTES.index(@note)
+			$log.info "#{@note}#{@octave} created"					
 		end
 		
 		# from comparable
@@ -261,16 +270,16 @@ module Tones
 	# which we applied a possibly inverted formula
 	#
 	# Examples
-	# 		cmaj = Tones::Chord 'c', 1, 'MAJ' 								# => C1 E1 G1
-	#		cmaj = Tones::Chord.new('c', 1, 'MAJ', Tones::SECOND)			# => G1 C2 E2	
+	# 		cmaj = Tones::Chord 'c', 1, :major 								# => C1 E1 G1
+	#		cmaj = Tones::Chord.new('c', 1, :major, Tones::SECOND)			# => G1 C2 E2	
 	
 	
 	class Chord < ChromaticScale
 		attr_reader :chord, :type, :inversion 
 
-		def initialize(root, octave, type, inversion = NONE)    
+		def initialize(root, octave, type, inversion = NONE)   
 			super(root, octave)               
-			@type = type.to_s.upcase                       #typo safety 				
+			@type = type				
 			self.invert!(inversion)
 		end
 		
@@ -278,7 +287,7 @@ module Tones
 		# == WARNING ***************************************************************
 		# do not access or chain a call to this as the method returns an array (the inverted formula)
 		# Examples of use
-		#  			c = Chord.new ('c', 1 'MAJ')
+		#  			c = Chord.new ('c', 1, :major)
 		# 			c.invert!(Tones::SECOND)
 		# 			c.do_whatever_you_want (now)
 		# =begin
@@ -315,7 +324,7 @@ module Tones
 		
 		# Return a string describing the name of the chord
 		def name
-			"#{@root}#{@octave} #{(@type).capitalize} inversion: #{@inversion}"
+			"#{@root}#{@octave} #{(@type).to_s.capitalize} inversion: #{@inversion}"
 		end
 	end #of Chord
 	
@@ -325,12 +334,12 @@ module Tones
 		
 		private
 		
-		def initialize ( root, octave,  mode = "CHROMATIC") 
+		def initialize ( root, octave,  mode = :chromatic) 
 			super(root, octave)
 			@scale = Array.new()     
-			@mode = mode.upcase            
+			@mode = mode         
 			case @mode                                                   
-			when 'CHROMATIC'    
+			when :chromatic    
 				@scale = @chromatic_scale  
 			else 
 				modalScaleFromKey!(@root, @octave, @mode)
@@ -361,7 +370,7 @@ module Tones
 		
 		# Return the name of the scale 
 		def name
-			"#{@root}#{@octave} #{@mode}"
+			"#{@root}#{@octave} #{@mode}.to_s"
 		end
 	end #of Scale
 end
