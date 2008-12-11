@@ -4,18 +4,25 @@
 require 'Logger'
 module Tones
     
+ #logger things---------------------   
     path_to_logfile = File.join(File.expand_path(File.dirname(__FILE__)),'..','zings', 'log.txt')
     $log = Logger.new(path_to_logfile)
     $log.level = Logger::DEBUG
+ #End logger things-----------------
+ 
+    #exceptions
+    class NoteError     < ArgumentError; end
+    class OctaveError   < ArgumentError; end
     
 	NOTE_SHARP  = %w[C C# D D# E F F# G G# A A# B ]
 	NOTE_FLAT 	= %w[C Db D Eb E F Gb G Ab A Bb B ]
+	
 	
 	# By default, we use the 'sharp' scale
 	NOTES		= NOTE_SHARP
 	
 	# original Chromatic Scale Length (from c to b)
-	ALLNOTES_LENGTH = 12 
+	ALL_NOTES_LENGTH = 12 
 	
 	# Chromatic Scale Length set to 3 octaves to deal with 14th, 17th and 21st degrees
 	CHROM_SCALE_LENGTH = 36     
@@ -154,8 +161,8 @@ module Tones
 	}
 	
 	# Class Note
-	# is comparable and knows how to create a new note at_interval
-	# as well as return succ and prev
+	# 
+	# 
 	#
 	#  == Converters
 	# to_s, to_hz, to_MIDI
@@ -177,9 +184,11 @@ module Tones
 					:octave			
 
 		def initialize (n = 'C', o = 1)
+		    raise NoteError, 'Not a valid note' unless (NOTE_SHARP + NOTE_FLAT).include? n.capitalize
+		    raise OctaveError, 'Octave must be between -1 and 9' unless (-1..9).member? o
 			@note 	= n.capitalize
 			@octave = o
-			@index 	= NOTES.index(@note)					
+			@index 	= NOTES.index(@note)
 		end
 		
 		# from comparable
@@ -214,14 +223,17 @@ module Tones
 			return note
 		end
 		
+		#Convenience!
+		def +(i); at_interval(i); end
+		
 		# returns the frequency of the note
 		def to_hz
-			PITCHES["#{self.note.upcase}#{self.octave.to_s}"][0]
+		    PITCHES["#{self.note.upcase}#{self.octave.to_s}"][0]
 		end
 		
 		# returns the midi note for this note
-		def to_MIDI
-			PITCHES["#{self.note.upcase}#{self.octave.to_s}"][2]
+		def to_MIDI 
+		    PITCHES["#{self.note.upcase}#{self.octave.to_s}"][2] 
 		end
 	end 
 	
