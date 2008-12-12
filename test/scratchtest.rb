@@ -5,7 +5,8 @@ include Instrument
 
 puts c = Chord.new( "c", 1, :major)
 puts c.invert!(SECOND)
-c.invert!(FITH)
+# c.invert!(FITH)
+#Note.new 'c', 15
 
 puts c
 
