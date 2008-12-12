@@ -207,13 +207,28 @@ module Tones
 		def prev
 			self.note == 'C'? Note.new('B', self.octave-1) : Note.new(NOTES[@index-1], self.octave)
 		end
+		
 		def to_s
 			"#{note} #{octave}"
 		end
 		
+		 def to_a
+		  [@note,@octave]
+		 end
+		 
+        def [](index)
+            case index
+            when 0, -2: @note
+            when 1, -1: @octave
+            when :note, "note": @note
+            when :octave, "octave": @octave
+            else nil
+            end
+        end
 		# returns the note a interval
 		# ex: c.at_interval(7) #=> g
 		def at_interval(i)
+		    raise TypeError, "Integer expected" unless i.is_a? Fixnum
 			note = self
 			if i < 0 then
 				i.abs.times { |forget| note = note.prev  }
@@ -223,9 +238,8 @@ module Tones
 			return note
 		end
 		
-		#Convenience!
-		def +(i); at_interval(i); end
-		
+		alias + at_interval
+	
 		# returns the frequency of the note
 		def to_hz
 		    PITCHES["#{self.note.upcase}#{self.octave.to_s}"][0]
@@ -287,7 +301,7 @@ module Tones
 	
 	
 	class Chord < ChromaticScale
-		attr_reader :chord, :type, :inversion 
+		attr_reader :notes, :type, :inversion 
 
 		def initialize(root, octave, type, inversion = NONE)   
 			super(root, octave)               
@@ -306,7 +320,7 @@ module Tones
 		#	TODO  turn this into a private method and write invert that returns a new chord
 		#=end
 		def invert! inversion										
-			@chord = Array.new  
+			@notes = Array.new  
 			@inversion = inversion  
 			invf = CHORD_FORMULAS[@type].dup			#-------NOTE THE DUP-------	
 			inversion.times do |t|
@@ -314,12 +328,12 @@ module Tones
 				head += 12
 				invf << head
 			end
-			invf.each { |e|  @chord.push(@chromatic_scale[e]) }		
+			invf.each { |e|  @notes.push(@chromatic_scale[e]) }		
 		end
 		
 		# Return each element in turn
 		def each
-			@chord.each { |e| yield e  }
+			@notes.each { |e| yield e  }
 		end
 		
 		# Return a new Chord Object transposed
@@ -330,7 +344,7 @@ module Tones
 		
 		def to_s
 			sout = ""
-			@chord.each {|n| sout << n.note.to_s<< n.octave.to_s<<' '}
+			@notes.each {|n| sout << n.note.to_s<< n.octave.to_s<<' '}
 			sout
 		end
 		
@@ -342,17 +356,17 @@ module Tones
 	
 	class   Scale <  ChromaticScale
 
-		attr_reader :scale, :mode
+		attr_reader :notes, :mode
 		
 		private
 		
 		def initialize ( root, octave,  mode = :chromatic) 
 			super(root, octave)
-			@scale = Array.new()     
+			@notes = Array.new()     
 			@mode = mode         
 			case @mode                                                   
 			when :chromatic    
-				@scale = @chromatic_scale  
+				@notes = @chromatic_scale  
 			else 
 				modalScaleFromKey!(@root, @octave, @mode)
 			end 
@@ -360,13 +374,13 @@ module Tones
 		
 		def modalScaleFromKey!(root, octave, mode)
 			formulas = SCALE_FORMULAS[mode]                                    
-			formulas.each {|d| @scale<< @chromatic_scale[d]} 
+			formulas.each {|d| @notes<< @chromatic_scale[d]} 
 		end
 		
 		public
 
 		def each
-		        @scale.each { |e| yield e  }
+		        @notes.each { |e| yield e  }
 	    end
 	
 		def transpose semitone 
@@ -376,7 +390,7 @@ module Tones
 
 		def to_s
 			sout = ''
-			@scale.each {|n| sout << n.note.to_s<< n.octave.to_s<<' ' }
+			@notes.each {|n| sout << n.note.to_s<< n.octave.to_s<<' ' }
 			sout
 		end 
 		
