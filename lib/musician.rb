@@ -6,12 +6,17 @@
 #  Copyright 2008 __MyCompanyName__. All rights reserved.
 # 
 
-require 'fretboard'
+require 'instrument'
 
 class Musician
-    def initialize(instrument_def)
+    def initialize(instrument_def,instrument_name)
+        @instrument = Instrument::Fretboard.new(instrument_def, instrument_name)
         
     end
     
-    
+    def play_chord( root, octave, type, inversion, options ={})
+        chord       = Tones::Chord(root, octave, type, inversion)
+        @stickyfy   = options[:stickyfy]||= false
+        @guitarify  = options[:guitarify]||= false
+    end
 end
