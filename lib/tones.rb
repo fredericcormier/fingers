@@ -1,14 +1,17 @@
 #
 #  Created by Frederic Cormier on 2008-06-02.
 # 
-require 'Logger'
+
 module Tones
+
     
- #logger things---------------------   
+ #logger things--------------------- 
+ 	require 'Logger'
+
     path_to_logfile = File.join(File.expand_path(File.dirname(__FILE__)),'..','zings', 'log.txt')
     $log = Logger.new(path_to_logfile)
     $log.level = Logger::DEBUG
- #End logger things-----------------
+ #End logger -----------------
  
     #exceptions
     class NoteError     		< ArgumentError; end
@@ -325,20 +328,20 @@ module Tones
 		# 			c.invert!(Tones::SECOND)
 		# 			c.do_whatever_you_want (now)
 		# =begin
-		#	TODO  turn this into a private method and write invert that returns a new chord
+		#	TODO  turn this into a private method and write  public invert that returns a new chord
 		#=end
-		def invert! i
+		def invert! inv
 			#error if tryng a 7th inversion on a 3 notes chord
-			raise ChordInversionError , E__M[:chord_inversion_error]  unless i <= (Tones::CHORD_FORMULAS[type].length )-1										
+			raise ChordInversionError , E__M[:chord_inversion_error]  unless inv <= (Tones::CHORD_FORMULAS[type].length )-1										
 			@notes = Array.new  
-			@inversion = i  
-			invf = CHORD_FORMULAS[@type].dup			#-------NOTE THE DUP-------	
+			@inversion = inv  
+			invform = CHORD_FORMULAS[@type].dup			#-------NOTE THE DUP-------	
 			inversion.times do |t|
-				head = invf.shift
+				head = invform.shift
 				head += 12
-				invf << head
+				invform << head
 			end
-			invf.each { |e|  @notes.push(@chromatic_scale[e]) }		
+			invform.each { |e|  @notes.push(@chromatic_scale[e]) }		
 		end
 
 		# Return each element in turn
@@ -357,9 +360,9 @@ module Tones
 		def to_a
 			@notes
 		end
+		
 		def [](index)
-			return nil unless (0..(@notes.length )-1)
-			return @notes[index]
+			@notes[index]
 		end
 		
 		def to_s
@@ -368,7 +371,6 @@ module Tones
 			sout
 		end
 
-		# Return a string describing the name of the chord
 		def name
 			"#{@root}#{@octave} #{(@type).to_s.capitalize} inversion: #{@inversion}"
 		end
@@ -402,7 +404,15 @@ module Tones
 		def each
 			@notes.each { |e| yield e  }
 		end
-
+		
+		def to_a
+			@notes
+		end
+		
+		def [](index)
+			@notes[index]
+		end
+		
 		def transpose semitone 
 			transposed_note =Note.new(@root, @octave).at_interval(semitone)		
 			Scale.new(transposed_note.note, transposed_note.octave, @mode)		
@@ -414,7 +424,6 @@ module Tones
 			sout
 		end 
 
-		# Return the name of the scale 
 		def name
 			"#{@root}#{@octave} #{@mode}.to_s"
 		end

@@ -4,7 +4,7 @@ include Tones
 include InstrumentDef
 
 module Instrument
-    # a istring (or instrument string) is simply a repeating chromatic scale
+    # a i string (or instrument string) is simply a repeating chromatic scale
     # note that we copy the chromatic scale in the string array
     class String < Tones::ChromaticScale
 
@@ -20,7 +20,7 @@ module Instrument
         def note_at_fret(fretNum)
             @this_string[fretNum]	
         end
-        #like the method name says
+        #lI the note in the ran ge of this string
         def can_play_note?( note, octave)			
             @this_string.include?  Note.new(note, octave)
         end

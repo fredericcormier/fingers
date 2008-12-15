@@ -45,8 +45,12 @@ class TestTones < Test::Unit::TestCase
 
 		assert(@amaj + 3 == @cmaj, "+ is an alias for transpose")
 		
-		#inversion. a Major chord is made of 3 notes so 2 inversions are possible
+		#inversion. example: a Major chord is made of 3 notes so 2 inversions are possible
 		assert_raise(Tones::ChordInversionError) { @cmaj.invert! 3  }
 		assert_nothing_raised(Tones::ChordInversionError) { @cmaj.invert! 2 }
+	end
+	
+	def test_scale
+		
 	end
 end
