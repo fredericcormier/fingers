@@ -74,6 +74,9 @@ STICK_12_CLASSIC =
 			['a', 2,24],		#10
 			['e', 3,24],		#11
 			['b', 3,24]]		#12
+			
+STICK = STICK_12_CLASSIC
+
 STICK_10_CLASSIC =
 			[['d', 4,24],		#1
 			['a', 3,24],		#2
@@ -85,7 +88,7 @@ STICK_10_CLASSIC =
 			['d', 2,24],		#8
 			['a', 2,24],		#9
 			['e', 3,24]]		#10
-STICK_1O_BARITONE =
+STICK_BARITONE =
 			[['a', 3,24],		#1
 			['e', 3,24],		#2
 			['b', 2,24],		#3

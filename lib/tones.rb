@@ -10,8 +10,8 @@ module Tones
  	require 'Logger'
 
     path_to_logfile = File.join(File.expand_path(File.dirname(__FILE__)),'..','zings', 'log.txt')
-    $log = Logger.new(path_to_logfile)
-    $log.level = Logger::DEBUG
+    $logger = Logger.new(path_to_logfile)
+    $logger.level = Logger::DEBUG
  #End logger -----------------
 } 
     #exceptions
@@ -302,7 +302,11 @@ module Tones
 			sout = ""
 			@chromatic_scale.each {|n| sout << n.note.to_s<<' '<< n.octave.to_s<<', ' }
 			sout
-		end  
+		end 
+		
+		def name
+		    "#{@root} #{octave}" 
+	    end
 	end # of class
 
 	# Class Chord

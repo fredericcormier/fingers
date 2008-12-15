@@ -33,6 +33,12 @@ puts cmaj = Tones::Chord.new('c', 1, :major, Tones::SECOND)          # => G1 C2 
 
 s = Instrument::String.new('c', 3, 24)
 puts s
-stick = Fretboard.new(InstrumentDef::STICK_12_CLASSIC,'')
-puts
-puts stick.setOfStrings
+stick = Fretboard.new(STICK,'')
+puts stick.strings
+
+3.times { |n| puts  }
+
+guitar  = Instrument::Fretboard.new(GUITAR, 'my_beloved_guild')
+puts guitar.strings
+puts guitar[1][3]
+
