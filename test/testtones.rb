@@ -13,6 +13,8 @@ class TestTones < Test::Unit::TestCase
 		@cmaj1_inv2  	= Tones::Chord.new('c', 1, :major, Tones::SECOND)			# => G1 C2 E2
 		@amaj			= Chord.new 'a', 1, :major
 		@cmaj			= Chord.new 'c', 2, :major
+		@fsharpMixo     = Scale.new 'f#', 2, :mixolydian
+		@fsmString      = "F#2 G#2 A#2 B2 C#3 D#3 E3 F#3 "
 	end
 
 	def test_notes
@@ -31,7 +33,7 @@ class TestTones < Test::Unit::TestCase
 
 		assert(@c1[0] == "C", "C at index 0")
 		assert(@b0[:octave] == 0, "Octave is 0")
-		assert_nil( @b0[8] )
+		assert_raise(ArrayOutOfBoundsError) {@b0[8]} 
 		assert(@c1.to_a == ['C', 1], "to_a failed.")
 
 
@@ -39,9 +41,9 @@ class TestTones < Test::Unit::TestCase
 
 	def test_chords
 		assert(@cmaj1_inv2.notes == [Note.new('g',1), Note.new('c', 2), Note.new('e', 2)], "Representation of chord is incorrect")
-		assert_nil(@cmaj1_inv2[5])
+		assert_raise(Tones::ArrayOutOfBoundsError){@cmaj1_inv2[5]}
 		assert( @cmaj1_inv2[2].note == 'E', "Chord Array like access is broken")
-		assert_nil(@cmaj1_inv2[3])
+		assert_raise(Tones::ArrayOutOfBoundsError){@cmaj1_inv2[3]}
 
 		assert(@amaj + 3 == @cmaj, "+ is an alias for transpose")
 		
@@ -51,6 +53,12 @@ class TestTones < Test::Unit::TestCase
 	end
 	
 	def test_scale
+	    assert(@fsharpMixo.to_s == @fsmString, "Comparing strings failed")
+	    assert(@fsharpMixo[2] == Note.new('a#', 2), "Array indexing fails on Scales")
+	    assert_raise(ArrayOutOfBoundsError) {@fsharpMixo[15]}
+	    assert_equal(Scale.new('c',2, :major_scale), Scale.new('c',2, :ionian))
+	    assert_equal(Scale.new('c',2, :ionian).transpose(7), Scale.new('g', 2, :ionian))
+	    assert_equal(Scale.new('c',2, :ionian)+ 7, Scale.new('g', 2, :ionian))
 		
 	end
 end

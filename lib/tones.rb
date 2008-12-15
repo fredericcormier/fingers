@@ -6,23 +6,26 @@ module Tones
 
     
  #logger things--------------------- 
+ BEGIN {
  	require 'Logger'
 
     path_to_logfile = File.join(File.expand_path(File.dirname(__FILE__)),'..','zings', 'log.txt')
     $log = Logger.new(path_to_logfile)
     $log.level = Logger::DEBUG
  #End logger -----------------
- 
+} 
     #exceptions
     class NoteError     		< ArgumentError; end
     class OctaveError   		< ArgumentError; end
 	class ChordInversionError	< ArgumentError; end
+	class ArrayOutOfBoundsError < ArgumentError; end
 
 	# E__M stands for ERROR_MESSAGES
 	 E__M = {
 		:note_error					=> 'Notes must be in the range of C .. B',
 		:octave_error				=> 'Octave must be between -1 and 9',
-		:chord_inversion_error		=> 'This inversion does not apply to that chord'
+		:chord_inversion_error		=> 'This inversion does not apply to that chord',
+		:array_out_of_bounds_error  => 'Array out of bounds, no such index'
 	}
     
 	NOTE_SHARP  = %w[C C# D D# E F F# G G# A A# B ]
@@ -233,7 +236,7 @@ module Tones
 			when 1, -1: @octave
 			when :note, "note": @note
 			when :octave, "octave": @octave
-			else nil
+			else raise ArrayOutOfBoundsError, E__M[:array_out_of_bounds_error]
 			end
 		end
 		# returns the note a interval
@@ -362,6 +365,7 @@ module Tones
 		end
 		
 		def [](index)
+		    raise ArrayOutOfBoundsError, E__M[:array_out_of_bounds_error] unless (0..((@notes.length )-1)).include? index
 			@notes[index]
 		end
 		
@@ -375,7 +379,12 @@ module Tones
 			"#{@root}#{@octave} #{(@type).to_s.capitalize} inversion: #{@inversion}"
 		end
 	end #of Chord
-
+	
+    #
+    #
+    #
+    #
+    #
 	class   Scale <  ChromaticScale
 
 		attr_reader :notes, :mode
@@ -408,16 +417,19 @@ module Tones
 		def to_a
 			@notes
 		end
-		
-		def [](index)
-			@notes[index]
-		end
+
+        def [](index)
+            raise ArrayOutOfBoundsError, E__M[:array_out_of_bounds_error] unless (0..((@notes.length )-1)).include? index
+            @notes[index]
+        end
 		
 		def transpose semitone 
 			transposed_note =Note.new(@root, @octave).at_interval(semitone)		
 			Scale.new(transposed_note.note, transposed_note.octave, @mode)		
 		end
 
+        alias + transpose
+        
 		def to_s
 			sout = ''
 			@notes.each {|n| sout << n.note.to_s<< n.octave.to_s<<' ' }
@@ -425,7 +437,7 @@ module Tones
 		end 
 
 		def name
-			"#{@root}#{@octave} #{@mode}.to_s"
+			"#{@root}#{@octave} #{@mode}"
 		end
 	end #of Scale
 end

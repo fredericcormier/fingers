@@ -3,14 +3,21 @@ require File.join(File.expand_path(File.dirname(__FILE__)),'..','lib', 'instrume
 include Tones
 include Instrument
 
+begin
 puts c = Chord.new( "c", 1, :major)
 puts c.invert!(SECOND)
-# c.invert!(FITH)
-#Note.new 'c', 15
-
+c.invert!(FITH)
+Note.new 'c', 15
+rescue => e
+    puts " Some Errors"
+    puts e
+    
+end
 puts c
 
-puts s = Tones::Scale.new( "F#",2, :mixolydian)
+s = Tones::Scale.new( "F#",2, :mixolydian)
+puts s.name + ": "
+puts s
 puts c13 = Tones::Chord.new( 'A',1, :major_13 )
 puts c13.name
 c13.invert! FITH
