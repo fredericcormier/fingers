@@ -3,12 +3,10 @@ require "test/unit"
 require File.join(File.expand_path(File.dirname(__FILE__)),'..','lib', 'tones')
 
 class TestTones < Test::Unit::TestCase
-
-
 	include Tones   
 	def setup
-
 		@c1     		= Note.new 'c', 1
+		@g1             = Note.new 'g', 1
 		@b0     		= Note.new 'b', 0
 		@cmaj1_inv2  	= Tones::Chord.new('c', 1, :major, Tones::SECOND)			# => G1 C2 E2
 		@amaj			= Chord.new 'a', 1, :major
@@ -18,6 +16,10 @@ class TestTones < Test::Unit::TestCase
 	end
 
 	def test_notes
+	    assert(@c1.interval(@g1) == 7, "A fith apart")
+	    assert(@c1.interval(Note.new('f#', 2))== 18, "a Flat fith and an octave")
+	    assert(@c1.interval(@b0) == -1, 'One semitone')
+	    assert(@c1.interval(Note.new('g', 0)) == -5, "Fouth below.")
 		assert(@c1.prev == @b0, "those should be the same notes")
 		assert(@b0.succ == @c1, "those should be the same notes")
 		assert(@c1.at_interval(7)== Note.new('g',1), "G is the fith of C.")
@@ -35,8 +37,6 @@ class TestTones < Test::Unit::TestCase
 		assert(@b0[:octave] == 0, "Octave is 0")
 		assert_raise(ArrayOutOfBoundsError) {@b0[8]} 
 		assert(@c1.to_a == ['C', 1], "to_a failed.")
-
-
 	end
 
 	def test_chords
@@ -44,9 +44,8 @@ class TestTones < Test::Unit::TestCase
 		assert_raise(Tones::ArrayOutOfBoundsError){@cmaj1_inv2[5]}
 		assert( @cmaj1_inv2[2].note == 'E', "Chord Array like access is broken")
 		assert_raise(Tones::ArrayOutOfBoundsError){@cmaj1_inv2[3]}
-
 		assert(@amaj + 3 == @cmaj, "+ is an alias for transpose")
-		
+	
 		#inversion. example: a Major chord is made of 3 notes so 2 inversions are possible
 		assert_raise(Tones::ChordInversionError) { @cmaj.invert! 3  }
 		assert_nothing_raised(Tones::ChordInversionError) { @cmaj.invert! 2 }
@@ -58,7 +57,6 @@ class TestTones < Test::Unit::TestCase
 	    assert_raise(ArrayOutOfBoundsError) {@fsharpMixo[15]}
 	    assert_equal(Scale.new('c',2, :major_scale), Scale.new('c',2, :ionian))
 	    assert_equal(Scale.new('c',2, :ionian).transpose(7), Scale.new('g', 2, :ionian))
-	    assert_equal(Scale.new('c',2, :ionian)+ 7, Scale.new('g', 2, :ionian))
-		
+	    assert_equal(Scale.new('c',2, :ionian)+ 7, Scale.new('g', 2, :ionian))	
 	end
 end

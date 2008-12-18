@@ -195,7 +195,8 @@ module Tones
 		include Comparable
 
 		attr_reader :note, 
-		:octave			
+		            :octave	,
+		            :index		
 
 		def initialize (n = 'C', o = 1)
 			raise NoteError, 	E__M[:note_error] 	unless (NOTE_SHARP + NOTE_FLAT).include? n.capitalize
@@ -230,8 +231,8 @@ module Tones
 			[@note,@octave]
 		end
 
-		def [](index)
-			case index
+		def [](i)
+			case i
 			when 0, -2: @note
 			when 1, -1: @octave
 			when :note, "note": @note
@@ -251,7 +252,19 @@ module Tones
 			end
 			return note
 		end
-
+		
+        #returns the interval between this note and an other
+        def interval(other)
+            i = 0
+            case self <=> other
+            when 0 then return 0
+            when -1 then 
+                ((other.index - self.index) + ((other.octave - self.octave) * 12))
+            when 1 then
+               -((self.index - other.index) + ((self.octave - other.octave) * 12))
+            end    
+        end
+        
 		alias + at_interval
 
 		# returns the frequency of the note
@@ -368,9 +381,9 @@ module Tones
 			@notes
 		end
 		
-		def [](index)
-		    raise ArrayOutOfBoundsError, E__M[:array_out_of_bounds_error] unless (0..((@notes.length )-1)).include? index
-			@notes[index]
+		def [](i)
+		    raise ArrayOutOfBoundsError, E__M[:array_out_of_bounds_error] unless (0..((@notes.length )-1)).include? i
+			@notes[i]
 		end
 		
 		def to_s
@@ -422,9 +435,9 @@ module Tones
 			@notes
 		end
 
-        def [](index)
-            raise ArrayOutOfBoundsError, E__M[:array_out_of_bounds_error] unless (0..((@notes.length )-1)).include? index
-            @notes[index]
+        def [](i)
+            raise ArrayOutOfBoundsError, E__M[:array_out_of_bounds_error] unless (0..((@notes.length )-1)).include? i
+            @notes[i]
         end
 		
 		def transpose semitone 
