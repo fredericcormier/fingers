@@ -30,6 +30,7 @@ module Tones
     
 	NOTE_SHARP  = %w[C C# D D# E F F# G G# A A# B ]
 	NOTE_FLAT 	= %w[C Db D Eb E F Gb G Ab A Bb B ]
+	NO_NOTE     = %w[ X ]
 	
 	
 	# By default, we use the 'sharp' scale
@@ -199,7 +200,7 @@ module Tones
 		            :index		
 
 		def initialize (n = 'C', o = 1)
-			raise NoteError, 	E__M[:note_error] 	unless (NOTE_SHARP + NOTE_FLAT).include? n.capitalize
+			raise NoteError, 	E__M[:note_error] 	unless (NOTE_SHARP + NOTE_FLAT+ NO_NOTE).include? n.capitalize
 			raise OctaveError, 	E__M[:octave_error] unless (-1..9).member? o
 			@note 	= n.capitalize
 			@octave = o
@@ -255,7 +256,6 @@ module Tones
 		
         #returns the interval between this note and an other
         def interval(other)
-            i = 0
             case self <=> other
             when 0 then return 0
             when -1 then 
