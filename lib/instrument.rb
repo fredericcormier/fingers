@@ -95,7 +95,7 @@ module Instrument
             @num_of_strings.times { |i| @tuning << instrumentDef[i][0] }
             @num_of_strings.times { |t| @strings<<Instrument::String.new(instrumentDef[t][0],instrumentDef[t][1],instrumentDef[t][2])} 
         end
-        #access each string by index
+        #access string at index
         def [](index)
             raise StringOutOfBounds, E__M[:string_out_of_bounds] unless (0..(@num_of_strings - 1)).member? index
             @strings[index]

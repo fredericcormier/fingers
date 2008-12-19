@@ -17,14 +17,23 @@ class Musician
     
     def play_chord( root, octave, type, inversion = Tones::NONE, options ={})
         chord       = Tones::Chord.new(root, octave, type, inversion)
-        solution    = Marshal.load(Marshal.dump(@instrument.strings))		#make a fresh copy
-        solution.each do |s|
-            puts s.class
-        	s.notes.map! {|e| e = chord.notes.include?(e) ? e : Note.new('X',0) } 
-    	end
+        board       = Marshal.load(Marshal.dump(@instrument.strings))		#make a fresh copy
+        place_notes(board, chord)
+       
         # @stickyfy   = options[:stickyfy]||= false
         # @guitarify  = options[:guitarify]||= false
     end
+   
+   #erases the notes that don't match the request
+    def place_notes(fb, run)
+    #for each instrument string, for each note if that note is included in the run (Chord or Scale)
+    #keep that note, else replace with a 'X'0
+         fb.each do |s|                                                  
+            s.notes.map! { |e| e = run.notes.include?(e) ? e : Note.new('X', 0)  }
+        end
+    end
+    
+    private :place_notes
 end
 
 eddie = Musician.new(GUITAR, 'guigui')
