@@ -62,7 +62,10 @@ module Instrument
         def to_a
             @notes
         end
-
+        
+        def each
+            @notes.each { |e| yield e  }
+        end
         def to_s
             sout =""
             @notes.each { |e| sout << e.note.to_s << e.octave.to_s<<" "}
@@ -100,7 +103,9 @@ module Instrument
             raise StringOutOfBounds, E__M[:string_out_of_bounds] unless (0..(@num_of_strings - 1)).member? index
             @strings[index]
         end
-
+        def each
+            @strings.each { |e| yield e  }
+        end
     end
 
 end

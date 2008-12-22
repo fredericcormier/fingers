@@ -1,25 +1,21 @@
-class ASCIIIprinter
-	@name = ''
+class ASCIIPrinter
+    def initialize(inboard)
+        puts sout = ""                          #skip a line
+        inboard[1].notes.each_index { |i| sout<<i.to_s.center(4)<<" "  }
+        puts sout
+        inboard.each do |s|
+            sout = ""
+            s.notes.each do |n|
+                if n.note =='X'
+                    sout <<'----'.center(4) 
+                    sout <<'|'
+                else
+                    sout <<"#{n.note}#{n.octave}".center(4)
+                    sout <<'|'
+                end 
+            end 
+            puts sout
+        end
+    end
 
-	def initialize(name)
-		@name = name
-	end
-
-    # def print(inStrings)
-    #   puts sout = ""                          #skip a line
-    #   inStrings[1].theString.each_index { |i| sout<<i.to_s.center(4)<<" "  }
-    #   puts sout
-    #   inStrings.each do |s|
-    #       sout = ""
-    #       s.theString.each do |n|
-    #           if n.note =='X'
-    #               sout <<'----'.center(4) 
-    #               sout <<'|'
-    #           else
-    #               sout <<"#{n.note}#{n.octave}".center(4)
-    #               sout <<'|'
-    #           end 
-    #       end 
-    #       puts sout
-    #   end     
-	end
+end

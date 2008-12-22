@@ -227,11 +227,14 @@ module Tones
 		def to_s
 			"#{note} #{octave}"
 		end
-
+		
+		alias name to_s
+        # return self because we want all the classes in the lib to return an array of Note objects
 		def to_a
-			[@note,@octave]
+			[self]
 		end
-
+		
+        # This is not consistent with previous method. I may remove this
 		def [](i)
 			case i
 			when 0, -2: @note
@@ -283,7 +286,7 @@ module Tones
 	# Create a scale of 12 semitones comprised only of  nested halftones 
 	# starting at root
 	# this is the foundation scale for computing other scales as well as chords
-	# you shouldn't use this Class directly
+	# === you shouldn't use this Class directly
 
 
 	class ChromaticScale
