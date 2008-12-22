@@ -15,7 +15,7 @@ class Musician
     E__M = {
         :no_array_rep =>    "Array of Notes required"
     }
-    def initialize(instrument_def,instrument_name)
+    def initialize(instrument_def,instrument_name = "")
         @instrument = Instrument::Fretboard.new(instrument_def, instrument_name) 
     end
     
@@ -43,10 +43,9 @@ class Musician
     end
     
     def render(options = {})
-        options[:name]||= nil
         case options[:style]
         when :ascii
-            puts options[:name] unless options[:name] == nil
+            puts options[:name]||= ""
             ASCIIPrinter.new(@onboard)
          when :html   
         end

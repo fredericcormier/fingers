@@ -89,7 +89,7 @@ module Instrument
     class Fretboard
         attr_reader :num_of_strings, :strings, :name, :tuning
 
-        def initialize(instrumentDef,name)                    
+        def initialize(instrumentDef,name = "")                    
             @num_of_strings     = instrumentDef.length        
             @strings            = Array.new(0)
             @tuning             = Array.new(0)

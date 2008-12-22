@@ -1,6 +1,6 @@
 class ASCIIPrinter
     def initialize(inboard)
-        puts sout = ""                          #skip a line
+        sout = ""                          #skip a line
         inboard[1].notes.each_index { |i| sout<<i.to_s.center(4)<<" "  }
         puts sout
         inboard.each do |s|

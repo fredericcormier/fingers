@@ -36,7 +36,7 @@ class TestTones < Test::Unit::TestCase
 		assert(@c1[0] == "C", "C at index 0")
 		assert(@b0[:octave] == 0, "Octave is 0")
 		assert_raise(ArrayOutOfBoundsError) {@b0[8]} 
-		assert(@c1.to_a == ['C', 1], "to_a failed.")
+		assert(@c1.to_a == [@c1], "to_a failed.")               # well! hummm!! ok!!! Sorry
 	end
 
 	def test_chords
