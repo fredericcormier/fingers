@@ -1,7 +1,7 @@
 require "tones"
-require "idef"
+require "tuning"
 include Tones
-include InstrumentDef
+include Tuning
 
 module Instrument
     #===Note about tuning
@@ -89,14 +89,14 @@ module Instrument
     class Fretboard
         attr_reader :num_of_strings, :strings, :name, :tuning
 
-        def initialize(instrumentDef,name = "")                    
-            @num_of_strings     = instrumentDef.length        
+        def initialize(tuning,name = "")                    
+            @num_of_strings     = tuning.length        
             @strings            = Array.new(0)
             @tuning             = Array.new(0)
             @name               = name
 
-            @num_of_strings.times { |i| @tuning << instrumentDef[i][0] }
-            @num_of_strings.times { |t| @strings<<Instrument::String.new(instrumentDef[t][0],instrumentDef[t][1],instrumentDef[t][2])} 
+            @num_of_strings.times { |i| @tuning << tuning[i][0] }
+            @num_of_strings.times { |t| @strings<<Instrument::String.new(tuning[t][0],tuning[t][1],tuning[t][2])} 
         end
         #access string at index
         def [](index)

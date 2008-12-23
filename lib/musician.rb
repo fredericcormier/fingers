@@ -15,8 +15,8 @@ class Musician
     E__M = {
         :no_array_rep =>    "Array of Notes required"
     }
-    def initialize(instrument_def,instrument_name = "")
-        @instrument = Instrument::Fretboard.new(instrument_def, instrument_name) 
+    def initialize(tuning,instrument_name = "")
+        @instrument = Instrument::Fretboard.new(tuning, instrument_name) 
     end
     
     # play(request) accept any request in the form of  an Array of Notes:

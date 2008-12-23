@@ -1,4 +1,4 @@
-module InstrumentDef
+module Tuning
 	
 	
 GUITAR_OST =[
