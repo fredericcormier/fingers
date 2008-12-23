@@ -78,7 +78,7 @@ puts cmaj = Tones::Chord.new('c', 1, :major, Tones::SECOND)          # => G1 C2 
 
 s = Instrument::String.new('c', 3, 24)
 puts s
-stick = Fretboard.new(STICK,'')
+stick = Fretboard.new(STICK_LH,'')
 puts stick.strings
 
 3.times { |n| puts  }
@@ -87,5 +87,5 @@ guitar  = Instrument::Fretboard.new(GUITAR, 'my_beloved_guild')
 puts guitar.strings
 puts guitar[1][3]
 
-tony = Musician.new(STICK_BARITONE)
+tony = Musician.new(STICK_RH)
 tony.play(Chord.new('c',4, :major))

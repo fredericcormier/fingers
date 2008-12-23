@@ -27,7 +27,7 @@ class TestFretboard < Test::Unit::TestCase
     E2 F2 F#2 G2 G#2 A2 A#2 B2 C3 C#3 D3 D#3 E3 F3 F#3 G3 G#3 A3 A#3 B3 C4 C#4 D4 D#4"
     def setup
         @estring = Instrument::String.new( 'e', 4, 24)
-        @stick  = Instrument::Fretboard.new(STICK, 'Stick')
+        @stick  = Instrument::Fretboard.new(STICK_RH, 'Stick')
         @guitar = Instrument::Fretboard.new(GUITAR, 'my_beloved_guild') 
     end
     def test_string
@@ -43,9 +43,9 @@ class TestFretboard < Test::Unit::TestCase
     
     def test_fretboard   
         assert(@stick[0] == Instrument::String.new('d', 4, 24), "Strings should be equals") 
-        assert(@stick[11] == Instrument::String.new('b', 3, 24), "Strings should be equals") 
+        assert(@stick[2] == Instrument::String.new('e', 3, 24), "Strings should be equals") 
         assert_raise(StringOutOfBounds ) { @stick[12] }
-        assert(@stick[10][0] == Note.new('e', 3), "Accessing notes through fretboard and strings failed")
+        assert(@stick[2][0] == Note.new('e', 3), "Accessing notes through fretboard and strings failed")
         assert(@guitar[5][3].note == 'G', 'Error accessing guitar note through Fretboard')
         assert_raise(NoSuchFretError) { @guitar[4][26]  }
         assert_raise(StringOutOfBounds) { @guitar[7] }

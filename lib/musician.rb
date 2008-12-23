@@ -42,6 +42,15 @@ class Musician
         render :style => :ascii, :name => request.name
     end
     
+    def guitarify
+    end
+    
+    # this one is for the  Stick© left hand when using 5th inverted bass
+    # - raise the third one octave higher
+    # - no open strings
+    def stickify
+    end
+    
     def render(options = {})
         case options[:style]
         when :ascii

@@ -30,6 +30,7 @@ module Tones
     
 	NOTE_SHARP  = %w[C C# D D# E F F# G G# A A# B ]
 	NOTE_FLAT 	= %w[C Db D Eb E F Gb G Ab A Bb B ]
+	# used to describe a non Note without raising an exception
 	NO_NOTE     = %w[ X ]
 	
 	
@@ -57,7 +58,7 @@ module Tones
 	                    
 	QUINTUPLE   =   [:major_9, :minor_9, :major_6_9, :minor_6_9, :ninth ]
 		
-	SCALE_FORMULAS = {
+	SCALES = {
 	    :chromatic =>           [0,1,2,3,4,5,6,7,8,9,10,11,12],
 		:major_scale => 	    [0,2,4,5,7,9,11,12],
 		:natural_minor =>       [0,2,3,5,7,8,10,12],
@@ -78,7 +79,7 @@ module Tones
 	}
 
 
-	CHORD_FORMULAS ={   
+	CHORDS ={   
 		:major =>               [0,4,7],
 		:major_6 =>             [0,4,7,9 ],
 		:major_7 =>             [0,4,7,11],
@@ -355,10 +356,10 @@ module Tones
 		#=end
 		def invert! inv
 			#error if tryng a 7th inversion on a 3 notes chord
-			raise ChordInversionError , E__M[:chord_inversion_error]  unless inv <= (Tones::CHORD_FORMULAS[type].length )-1										
+			raise ChordInversionError , E__M[:chord_inversion_error]  unless inv <= (Tones::CHORDS[type].length )-1										
 			@notes = Array.new  
 			@inversion = inv  
-			invform = CHORD_FORMULAS[@type].dup			#-------NOTE THE DUP-------	
+			invform = CHORDS[@type].dup			#-------NOTE THE DUP-------	
 			inversion.times do |t|
 				head = invform.shift
 				head += 12
@@ -424,7 +425,7 @@ module Tones
 		end
 
 		def modalScaleFromKey!(root, octave, mode)
-			formulas = SCALE_FORMULAS[mode]                                    
+			formulas = SCALES[mode]                                    
 			formulas.each {|d| @notes<< @chromatic_scale[d]} 
 		end
 
