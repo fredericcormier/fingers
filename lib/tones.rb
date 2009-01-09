@@ -270,7 +270,9 @@ module Tones
         end
         
 		alias + at_interval
-
+        
+        def synonym
+        end
 		# returns the frequency of the note
 		def to_hz
 			PITCHES["#{self.note.upcase}#{self.octave.to_s}"][0]
