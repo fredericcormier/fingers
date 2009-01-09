@@ -48,6 +48,8 @@ require File.join(File.expand_path(File.dirname(__FILE__)),'..','lib', 'musician
 include Tones
 include Instrument
 
+a = Note.new('a',5)
+
 begin
 puts c = Chord.new( "c", 1, :major)
 puts c.invert!(SECOND)

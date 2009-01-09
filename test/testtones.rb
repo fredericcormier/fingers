@@ -5,31 +5,32 @@ require File.join(File.expand_path(File.dirname(__FILE__)),'..','lib', 'tones')
 class TestTones < Test::Unit::TestCase
 	include Tones   
 	def setup
-		@c1     		= Note.new 'c', 1
-		@g1             = Note.new 'g', 1
-		@b0     		= Note.new 'b', 0
-		@cmaj1_inv2  	= Tones::Chord.new('c', 1, :major, Tones::SECOND)			# => G1 C2 E2
-		@amaj			= Chord.new 'a', 1, :major
-		@cmaj			= Chord.new 'c', 2, :major
-		@fsharpMixo     = Scale.new 'f#', 2, :mixolydian
+		@c1     		= Note.new C, 1
+		@g1             = Note.new G, 1
+		@b0     		= Note.new B, 0
+		@cmaj1_inv2  	= Tones::Chord.new(C, 1, :major, Tones::SECOND)			# => G1 C2 E2
+		@amaj			= Chord.new A, 1, :major
+		@cmaj			= Chord.new C, 2, :major
+		@fsharpMixo     = Scale.new Fs, 2, :mixolydian
 		@fsmString      = "F#2 G#2 A#2 B2 C#3 D#3 E3 F#3 "
+		@cflat          = Note.new Cb, 5                    # it's a B
 	end
 
 	def test_notes
 	    assert(@c1.interval(@g1) == 7, "A fith apart")
-	    assert(@c1.interval(Note.new('f#', 2))== 18, "a Flat fith and an octave")
+	    assert(@c1.interval(Note.new("f#", 2))== 18, "a Flat fith and an octave")
 	    assert(@c1.interval(@b0) == -1, 'One semitone')
-	    assert(@c1.interval(Note.new('g', 0)) == -5, "Fouth below.")
+	    assert(@c1.interval(Note.new(G, 0)) == -5, "Fouth below.")
 		assert(@c1.prev == @b0, "those should be the same notes")
 		assert(@b0.succ == @c1, "those should be the same notes")
-		assert(@c1.at_interval(7)== Note.new('g',1), "G is the fith of C.")
+		assert(@c1.at_interval(7)== Note.new(G,1), "G is the fith of C.")
 		#check alias
 		assert_equal(@c1 + 7, @c1.at_interval(7))
-		assert((@c1 + 7) == Note.new('g', 1), "'+' is like at_interval")
+		assert((@c1 + 7) == Note.new(G, 1), "'+' is like at_interval")
 
-		assert(Note.new('a',4).to_hz == 440, "A4 is 440 hz.")
-		assert_raise(Tones::NoteError) {Note.new('z',1)}
-		assert_raise(Tones::OctaveError) {Note.new('c#', -5)  }
+		assert(Note.new("a",4).to_hz == 440, "A4 is 440 hz.")
+		assert_raise(Tones::NoteError) {Note.new('Z',1)}
+		assert_raise(Tones::OctaveError) {Note.new(Cs, -5)  }
 		assert_raise(TypeError) { @c1 + 5.2 }
 		assert_raise(TypeError) { @c1 + "Yes" }
 
@@ -38,10 +39,12 @@ class TestTones < Test::Unit::TestCase
 		assert_raise(ArrayOutOfBoundsError) {@b0[8]} 
 		assert(@c1.to_a == [@c1], "to_a failed.")               # well! hummm!! ok!!! Sorry
 		
+		assert_equal(@cflat ,Note.new(B, 5))
+		
 	end
 
 	def test_chords
-		assert(@cmaj1_inv2.notes == [Note.new('g',1), Note.new('c', 2), Note.new('e', 2)], "Representation of chord is incorrect")
+		assert(@cmaj1_inv2.notes == [Note.new(G,1), Note.new(C, 2), Note.new(E, 2)], "Representation of chord is incorrect")
 		assert_raise(Tones::ArrayOutOfBoundsError){@cmaj1_inv2[5]}
 		assert( @cmaj1_inv2[2].note == 'E', "Chord Array like access is broken")
 		assert_raise(Tones::ArrayOutOfBoundsError){@cmaj1_inv2[3]}
@@ -54,10 +57,10 @@ class TestTones < Test::Unit::TestCase
 	
 	def test_scale
 	    assert(@fsharpMixo.to_s == @fsmString, "Comparing strings failed")
-	    assert(@fsharpMixo[2] == Note.new('a#', 2), "Array indexing fails on Scales")
+	    assert(@fsharpMixo[2] == Note.new(As, 2), "Array indexing fails on Scales")
 	    assert_raise(ArrayOutOfBoundsError) {@fsharpMixo[15]}
-	    assert_equal(Scale.new('c',2, :major_scale), Scale.new('c',2, :ionian))
-	    assert_equal(Scale.new('c',2, :ionian).transpose(7), Scale.new('g', 2, :ionian))
-	    assert_equal(Scale.new('c',2, :ionian)+ 7, Scale.new('g', 2, :ionian))	
+	    assert_equal(Scale.new(C,2, :major_scale), Scale.new(C,2, :ionian))
+	    assert_equal(Scale.new(C,2, :ionian).transpose(7), Scale.new(G, 2, :ionian))
+	    assert_equal(Scale.new(C,2, :ionian)+ 7, Scale.new(G, 2, :ionian))	
 	end
 end
