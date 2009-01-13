@@ -307,7 +307,22 @@ module Tones
 			PITCHES["#{self.note.upcase}#{self.octave.to_s}"][2] 
 		end
 	end 
-
+    class Key
+        def initialize(args)
+                
+        end
+         def signature
+         end
+         
+         def relative
+         end
+         
+         def relative?(other)
+         end
+         
+         
+        
+    end
 
 	# Class ChromaticScale
 	# Create a scale of 12 semitones comprised only of  nested halftones 
