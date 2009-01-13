@@ -27,17 +27,26 @@ module Tones
 		:chord_inversion_error		=> 'This inversion does not apply to that chord',
 		:array_out_of_bounds_error  => 'Array out of bounds, no such index'
 	}
+	# constant definition for notes 
+    C    =   Bs  = 'C'
+    Cs   =   Db  = 'C#'
+    D            = 'D'
+    Ds   =   Eb  = 'D#'
+    E    =   Fb  = 'E'
+    F    =   Es  = 'F'
+    Fs   =   Gb  = 'F#'
+    G            = 'G'
+    Gs   =   Ab  = 'G#'
+    A            = 'A'
+    As   =   Bb  = 'A#' 
+    B    =   Cb  = 'B'
     
-	NOTE_SHARP  = %w[C C# D D# E F F# G G# A A# B ]
-	NOTE_FLAT 	= %w[C Db D Eb E F Gb G Ab A Bb B ]
-	# used to describe a non Note without raising an exception
-	NO_NOTE     = %w[ X ]
-	
-	
-	# By default, we use the 'sharp' scale
-	NOTES		= NOTE_SHARP
-	
-	# original Chromatic Scale Length (from c to b)
+    NOTES = [C, Cs, D, Ds, E, F, Fs, G, Gs, A, As, B]
+    
+    X     =        'X'
+    NO_NOTE = [X]
+
+    
 	ALL_NOTES_LENGTH = 12 
 	
 	# Chromatic Scale Length set to 3 octaves to deal with 14th, 17th and 21st degrees
@@ -183,8 +192,13 @@ module Tones
 	#  == Converters
 	# to_s, to_hz, to_MIDI
 	#
+	# to create a note, the first argument is either the note as string ie "c#"
+	# or a Constant like C, D Cs and Bb.
+	# the usage of constants is of course encouraged . it also gives you access to flats ( Db )
+	# Cs stands for C sharp since "#" without quotes would trigger a commnent
 	# Examples
-	# 		puts csharp = Note.new( 'c#', 1) 				# => c# 1                 
+	# 		puts csharp = Note.new( 'c#', 1) 				# => C# 1   
+	# or    puts csharp = Note.new Cs, 1                    # => C# 1
 	# 		puts "csharp succ is #{csharp.succ}" 			# => csharp succ is D 1             
 	# 		puts c = csharp.prev   							# => C 1                           
 	# 		puts "c's fith is #{c.at_interval(7)}"  		# => c's fith is G 1          
@@ -200,10 +214,11 @@ module Tones
 		            :octave	,
 		            :index		
 
-		def initialize (n = 'C', o = 1)
-			raise NoteError, 	E__M[:note_error] 	unless (NOTE_SHARP + NOTE_FLAT+ NO_NOTE).include? n.capitalize
+		def initialize (n = C, o = 1)
+			raise NoteError, 	E__M[:note_error] 	unless (NOTES + NO_NOTE).include? n.capitalize
 			raise OctaveError, 	E__M[:octave_error] unless (-1..9).member? o
-			@note 	= n.capitalize
+			#capitalize if the input is a valid string
+			@note 	= n.capitalize                  
 			@octave = o
 			@index 	= NOTES.index(@note)
 		end
@@ -226,7 +241,7 @@ module Tones
 		end
 
 		def to_s
-			"#{note} #{octave}"
+			"#{@note} #{@octave}"
 		end
 		
 		alias name to_s
@@ -270,11 +285,10 @@ module Tones
         end
         
 		alias + at_interval
-		
-		def synonym
-		end
-		
-		alias synonym? ==
+
+        
+        def synonym
+        end
 		# returns the frequency of the note
 		def to_hz
 			PITCHES["#{self.note.upcase}#{self.octave.to_s}"][0]
@@ -285,7 +299,22 @@ module Tones
 			PITCHES["#{self.note.upcase}#{self.octave.to_s}"][2] 
 		end
 	end 
-
+    class Key
+        def initialize(args)
+                
+        end
+         def signature
+         end
+         
+         def relative
+         end
+         
+         def relative?(other)
+         end
+         
+         
+        
+    end
 
 	# Class ChromaticScale
 	# Create a scale of 12 semitones comprised only of  nested halftones 
