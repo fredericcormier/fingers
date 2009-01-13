@@ -42,20 +42,11 @@ module Tones
     B    =   Cb  = 'B'
     
     NOTES = [C, Cs, D, Ds, E, F, Fs, G, Gs, A, As, B]
+    
     X     =        'X'
     NO_NOTE = [X]
 
     
-    # NOTE_SHARP  = %w[C C# D D# E F F# G G# A A# B ]
-    # NOTE_FLAT     = %w[C Db D Eb E F Gb G Ab A Bb B ]
-    # # used to describe a non Note without raising an exception
-    # NO_NOTE     = %w[ X ]
-    # 
-	
-	# By default, we use the 'sharp' scale
-    #	NOTES		= NOTE_SHARP
-	
-	# original Chromatic Scale Length (from c to b)
 	ALL_NOTES_LENGTH = 12 
 	
 	# Chromatic Scale Length set to 3 octaves to deal with 14th, 17th and 21st degrees
