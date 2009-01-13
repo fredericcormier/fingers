@@ -28,18 +28,18 @@ module Tones
 		:array_out_of_bounds_error  => 'Array out of bounds, no such index'
 	}
 	# constant definition for notes 
-    C    =   Bs  = 'C'
-    Cs   =   Db  = 'C#'
-    D            = 'D'
-    Ds   =   Eb  = 'D#'
-    E    =   Fb  = 'E'
-    F    =   Es  = 'F'
-    Fs   =   Gb  = 'F#'
-    G            = 'G'
-    Gs   =   Ab  = 'G#'
-    A            = 'A'
-    As   =   Bb  = 'A#' 
-    B    =   Cb  = 'B'
+    C    =   Bs  = 'C'		#%w[C,  B#]
+    Cs   =   Db  = 'C#'		#%w[C#, Db]
+    D            = 'D'		#%w[D,  D]
+    Ds   =   Eb  = 'D#'		#%w[D#, Eb]
+    E    =   Fb  = 'E'		#%w[E,  Fb]
+    F    =   Es  = 'F'		#%w[F,  E#]
+    Fs   =   Gb  = 'F#'		#%w[F#, Gb]
+    G            = 'G'		#%w[G,  G]
+    Gs   =   Ab  = 'G#'		#%w[G#, Ab]
+    A            = 'A'		#%w[A,  A]
+    As   =   Bb  = 'A#' 	#%w[A#, Bb]
+    B    =   Cb  = 'B'		#%w[B,  Cb]
     
     NOTES = [C, Cs, D, Ds, E, F, Fs, G, Gs, A, As, B]
     
@@ -288,6 +288,7 @@ module Tones
 
         
         def synonym
+			
         end
 		# returns the frequency of the note
 		def to_hz
@@ -299,22 +300,7 @@ module Tones
 			PITCHES["#{self.note.upcase}#{self.octave.to_s}"][2] 
 		end
 	end 
-    class Key
-        def initialize(args)
-                
-        end
-         def signature
-         end
-         
-         def relative
-         end
-         
-         def relative?(other)
-         end
-         
-         
-        
-    end
+   
 
 	# Class ChromaticScale
 	# Create a scale of 12 semitones comprised only of  nested halftones 
@@ -333,6 +319,7 @@ module Tones
 		end
 		
 	end
+	
 	class ChromaticScale
 		include Comparable
 		attr_reader     :chromatic_scale,    #contains all the semitones (Notes) of a scale 
