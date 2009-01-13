@@ -31,10 +31,12 @@ class TestFretboard < Test::Unit::TestCase
         @guitar = Instrument::Fretboard.new(GUITAR, 'my_beloved_guild') 
     end
     def test_string
+		b = Note.new('b', 5)
         assert_raise(NoSuchFretError) { @estring[24] }
         assert_nothing_raised(NoSuchFretError) { @estring[23]  }
         assert(@estring.can_play_note?('a', 5), "An  E 4 string can play a A5")
         assert(@estring.can_play_note?(Note.new('a',5)) , "this is true")
+		assert(@estring.can_play_note?(b), "Failed passing Note")
         assert_nothing_raised(ArgumentError) {@estring.can_play_note?(Note.new('a', 5)) }
         assert_raise(ArgumentError) {@estring.can_play_note?(self)  }
         

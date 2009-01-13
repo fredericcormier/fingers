@@ -47,18 +47,18 @@ module Instrument
 
         #Is the note in the range of this string ?
         def can_play_note?(*args)
-            a = args
-            case a[0]
-            when Tones::Note then
-                @notes.include?(a[0])       
-            when Object::String  then
-                if a[1].class == Fixnum
-                    @notes.include?(Note.new(a[0], a[1]))
+            case args[0]
+            when Tones::Note then								#its a Note Object
+                @notes.include?(args[0])       
+            when Object::String  then							#it's a String
+                if args[1].class == Fixnum
+                    @notes.include?(Note.new(args[0], args[1]))
                 end
             else
                 raise ArgumentError
             end 
         end
+
         def to_a
             @notes
         end
@@ -81,7 +81,7 @@ module Instrument
     # to access notes through the fretboard just do
     #=== Usage
     # guitar  = Instrument::Fretboard.new(GUITAR, 'my_beloved_guild')
-    # puts guitar[1][3]  => D 4
+    # puts guitar[1][3]  => "D 4"
     #
     #the first array access the string and the second the fret. the array are zero based so in this example we have:
     # guitar[1] this is the second string (b on guitar)
@@ -103,6 +103,7 @@ module Instrument
             raise StringOutOfBounds, E__M[:string_out_of_bounds] unless (0..(@num_of_strings - 1)).member? index
             @strings[index]
         end
+
         def each
             @strings.each { |e| yield e  }
         end

@@ -270,7 +270,11 @@ module Tones
         end
         
 		alias + at_interval
-
+		
+		def synonym
+		end
+		
+		alias synonym? ==
 		# returns the frequency of the note
 		def to_hz
 			PITCHES["#{self.note.upcase}#{self.octave.to_s}"][0]
@@ -289,7 +293,17 @@ module Tones
 	# this is the foundation scale for computing other scales as well as chords
 	# === you shouldn't use this Class directly
 
-
+	class Key
+		def initialize(args)			
+		end
+		def signature
+		end
+		def relative
+		end
+		def relative? (other)
+		end
+		
+	end
 	class ChromaticScale
 		include Comparable
 		attr_reader     :chromatic_scale,    #contains all the semitones (Notes) of a scale 
@@ -462,4 +476,6 @@ module Tones
 		end
 	end #of Scale
 end
-
+=begin
+	TODO  implement relative scale check == for cmajor/ a minor and return relative
+=end

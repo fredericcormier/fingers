@@ -65,6 +65,8 @@ puts s.name + ": "
 puts s
 puts c13 = Tones::Chord.new( 'A',1, :major_13 )
 puts c13.name
+puts "eaching"
+c13.each { |e| puts e  }
 c13.invert! FITH
 puts c13
 
