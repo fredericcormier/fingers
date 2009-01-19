@@ -62,11 +62,12 @@ rescue => e
 end
 puts c
 
-s = Tones::Scale.new( "F#",2, :mixolydian)
+s = Tones::Scale.new( C,2, :mixolydian)
 puts s.name + ": "
 puts s
 puts c13 = Tones::Chord.new( 'A',1, :major_13 )
 puts c13.name
+puts c13
 puts "eaching"
 c13.each { |e| puts e  }
 c13.invert! FITH
@@ -74,7 +75,7 @@ puts c13
 
 puts
 puts cmaj = Tones::Chord.new('c', 1, :major, Tones::SECOND)          # => G1 C2 E2
-
+puts ChromaticScale.new(C, 2)
 
 
 

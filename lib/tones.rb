@@ -346,9 +346,7 @@ module Tones
 		end
 
 		def to_s
-			sout = ""
-			@chromatic_scale.each {|n| sout << n.note.to_s<<' '<< n.octave.to_s<<', ' }
-			sout
+			@chromatic_scale.inject('') {|mem, n| mem << n.note.to_s<<' '<< n.octave.to_s<<', ' }			
 		end 
 		
 		def name
@@ -421,9 +419,7 @@ module Tones
 		end
 		
 		def to_s
-			sout = ""
-			@notes.each {|n| sout << n.note.to_s<< n.octave.to_s<<' '}
-			sout
+			@notes.inject(('')) { |mem, n| mem <<n.note.to_s<<n.octave.to_s<<' ' }
 		end
 
 		def name
@@ -482,9 +478,7 @@ module Tones
         alias + transpose
         
 		def to_s
-			sout = ''
-			@notes.each {|n| sout << n.note.to_s<< n.octave.to_s<<' ' }
-			sout
+			@notes.inject('') { |mem, n | mem<< n.note.to_s<<n.octave.to_s<<' '  }
 		end 
 
 		def name
@@ -492,6 +486,6 @@ module Tones
 		end
 	end #of Scale
 end
-=begin
-	TODO  implement relative scale check == for cmajor/ a minor and return relative
-=end
+
+#	TODO  implement relative scale check == for cmajor/ a minor and return relative
+
