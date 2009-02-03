@@ -4,54 +4,62 @@
 
 module Tones
 
-    
- #logger things--------------------- 
- BEGIN {
- 	require 'Logger'
 
-    path_to_logfile = File.join(File.expand_path(File.dirname(__FILE__)),'..','zings', 'log.txt')
-    $logger = Logger.new(path_to_logfile)
-    $logger.level = Logger::DEBUG
- #End logger -----------------
-} 
-    #exceptions
-    class NoteError     		< ArgumentError; end
-    class OctaveError   		< ArgumentError; end
+	#logger things--------------------- 
+	BEGIN {
+		require 'Logger'
+
+		path_to_logfile = File.join(File.expand_path(File.dirname(__FILE__)),'..','zings', 'log.txt')
+		$logger = Logger.new(path_to_logfile)
+		$logger.level = Logger::DEBUG
+		#End logger -----------------
+	} 
+	#exceptions
+	class NoteError     		< ArgumentError; end
+	class OctaveError   		< ArgumentError; end
 	class ChordInversionError	< ArgumentError; end
 	class ArrayOutOfBoundsError < ArgumentError; end
+	class UnknownNoteError		< ArgumentError; end
 
 	# E__M stands for ERROR_MESSAGES
-	 E__M = {
+	E__M = {
 		:note_error					=> 'Notes must be in the range of C .. B',
 		:octave_error				=> 'Octave must be between -1 and 9',
 		:chord_inversion_error		=> 'This inversion does not apply to that chord',
-		:array_out_of_bounds_error  => 'Array out of bounds, no such index'
+		:array_out_of_bounds_error  => 'Array out of bounds, no such index',
+		:unknown_note_error			=> 'Malformed note'
 	}
 	# constant definition for notes 
-    C    =   Bs  = 'C'		#%w[C,  B#]
-    Cs   =   Db  = 'C#'		#%w[C#, Db]
-    D            = 'D'		#%w[D,  D]
-    Ds   =   Eb  = 'D#'		#%w[D#, Eb]
-    E    =   Fb  = 'E'		#%w[E,  Fb]
-    F    =   Es  = 'F'		#%w[F,  E#]
-    Fs   =   Gb  = 'F#'		#%w[F#, Gb]
-    G            = 'G'		#%w[G,  G]
-    Gs   =   Ab  = 'G#'		#%w[G#, Ab]
-    A            = 'A'		#%w[A,  A]
-    As   =   Bb  = 'A#' 	#%w[A#, Bb]
-    B    =   Cb  = 'B'		#%w[B,  Cb]
-    
-    NOTES = [C, Cs, D, Ds, E, F, Fs, G, Gs, A, As, B]
-    
-    X     =        'X'
-    NO_NOTE = [X]
+	C    =   Bs  = 'C'		
+	Cs   =   Db  = 'C#'		
+	D            = 'D'		
+	Ds   =   Eb  = 'D#'		
+	E    =   Fb  = 'E'		
+	F    =   Es  = 'F'		
+	Fs   =   Gb  = 'F#'		
+	G            = 'G'		
+	Gs   =   Ab  = 'G#'		
+	A            = 'A'		
+	As   =   Bb  = 'A#' 	
+	B    =   Cb  = 'B'		
 
-    
-	ALL_NOTES_LENGTH = 12 
+	X    =        'X'
 	
+	NOTES 	= [C, Cs, D, Ds, E, F, Fs, G, Gs, A, As, B].freeze
+	NO_NOTE = [X].freeze
+	
+	#this will not be needed I think
+	SYNONYMS = [%w[C 	B#],%w[C# 	Db],%w[D 	D],%w[D# 	Eb],%w[E 	Fb],%w[F 	E#],
+				%w[F# 	Gb],%w[G 	G],%w[G# 	Ab],%w[A 	A],%w[A# 	Bb], %w[B 	Cb]].freeze
+
+
+
+
+	ALL_NOTES_LENGTH = 12 
+
 	# Chromatic Scale Length set to 3 octaves to deal with 14th, 17th and 21st degrees
 	CHROM_SCALE_LENGTH = 36     
-	                             
+
 	# chord inversions                 
 	NONE    = 0
 	FIRST   = 1
@@ -61,14 +69,14 @@ module Tones
 	FITH	= 5  
 
 	TRIAD       =   [:major, :minor, :sus4, :diminished, :augmented ]
-	
+
 	QUAD        =   [:major_7, :minor_7, :dominant_7, :seventh_sus4, :major_6, :minor_6,
-	                    :half_diminished_7,:diminished_7, :augmented_7, :minor_major ]
-	                    
+					:half_diminished_7,:diminished_7, :augmented_7, :minor_major ]
+
 	QUINTUPLE   =   [:major_9, :minor_9, :major_6_9, :minor_6_9, :ninth ]
-		
+
 	SCALES = {
-	    :chromatic =>           [0,1,2,3,4,5,6,7,8,9,10,11,12],
+		:chromatic =>           [0,1,2,3,4,5,6,7,8,9,10,11,12],
 		:major_scale => 	    [0,2,4,5,7,9,11,12],
 		:natural_minor =>       [0,2,3,5,7,8,10,12],
 		:harmonic_minor =>      [0,2,3,5,7,8,11,12],
@@ -116,7 +124,7 @@ module Tones
 		:seventh_sus4 =>        [0,5,7,10],
 		:minor_major =>         [0,3,7,11]
 	}
-	
+
 	#  	Note				Hz		cpspch	MIDI
 	PITCHES =			{
 		'C-1'	 =>		[8.176,		3.00,	0],		'C#-1' 	 =>	      [8.662	,	3.01,	1],
@@ -184,7 +192,7 @@ module Tones
 		"E9"     =>   	[10548.08,	13.04,	124],	"F9"     =>	       [11175.30,	13.05,	125],
 		"F#9"    =>   	[11839.82,	13.06,	126],	"G9"     =>	       [12543.85,	13.07,	127]
 	}
-	
+
 	# Class Note
 	# 
 	# 
@@ -193,7 +201,7 @@ module Tones
 	# to_s, to_hz, to_MIDI
 	#
 	# to create a note, the first argument is either the note as string ie "c#"
-	# or a Constant like C, D Cs and Bb.
+	# or a Constant in  C, Cs, D, Ds, E, F, Fs, G, Gs, A, As, B, Bs, Db, Eb, Fb, Es, Gb, Ab, Bb, Cb 
 	# the usage of constants is of course encouraged . it also gives you access to flats ( Db )
 	# Cs stands for C sharp since "#" without quotes would trigger a commnent
 	# Examples
@@ -204,15 +212,16 @@ module Tones
 	# 		puts "c's fith is #{c.at_interval(7)}"  		# => c's fith is G 1          
 	# 		puts "c's prev is #{c.prev}"					# => c's prev is B 0                      
 	# 		puts "A frequency is #{(Note.new 'a', 4).to_hz}"# => A frequency is 440.0
-	
-	
+
+
+
 	class Note
 
 		include Comparable
 
-		attr_reader :note, 
-		            :octave	,
-		            :index		
+		attr_reader :note, 			#this is a textual representation of the note like "c#" or "DO#"
+					:octave	,
+					:index		
 
 		def initialize (n = C, o = 1)
 			raise NoteError, 	E__M[:note_error] 	unless (NOTES + NO_NOTE).include? n.capitalize
@@ -243,20 +252,23 @@ module Tones
 		def to_s
 			"#{@note} #{@octave}"
 		end
-		
+
 		alias name to_s
-        # return self because we want all the classes in the lib to return an array of Note objects
+		
+		alias value index
+		# return self because we want all the classes in the lib to return an array of Note objects
 		def to_a
 			[self]
 		end
-		
-        # This is not consistent with previous method. I may remove this
+
 		def [](i)
 			case i
-			when 0, -2: @note
-			when 1, -1: @octave
+			when 0, -3: @note
+			when 1, -2: @octave
+			when 2, -1: @index
 			when :note, "note": @note
 			when :octave, "octave": @octave
+			when :index, :value, "index", "value" : @index
 			else raise ArrayOutOfBoundsError, E__M[:array_out_of_bounds_error]
 			end
 		end
@@ -272,24 +284,20 @@ module Tones
 			end
 			return note
 		end
-		
-        #returns the interval between this note and an other
-        def interval(other)
-            case self <=> other
-            when 0 then return 0
-            when -1 then 
-                ((other.index - self.index) + ((other.octave - self.octave) * 12))
-            when 1 then
-               -((self.index - other.index) + ((self.octave - other.octave) * 12))
-            end    
-        end
-        
-		alias + at_interval
 
-        
-        def synonym
-			
-        end
+		#returns the interval between this note and an other
+		def interval(other)
+			case self <=> other
+			when 0 then return 0
+			when -1 then 
+				((other.index - self.index) + ((other.octave - self.octave) * 12))
+			when 1 then
+				-((self.index - other.index) + ((self.octave - other.octave) * 12))
+			end    
+		end
+
+		alias + at_interval
+		
 		# returns the frequency of the note
 		def to_hz
 			PITCHES["#{self.note.upcase}#{self.octave.to_s}"][0]
@@ -300,13 +308,7 @@ module Tones
 			PITCHES["#{self.note.upcase}#{self.octave.to_s}"][2] 
 		end
 	end 
-   
 
-	# Class ChromaticScale
-	# Create a scale of 12 semitones comprised only of  nested halftones 
-	# starting at root
-	# this is the foundation scale for computing other scales as well as chords
-	# === you shouldn't use this Class directly
 
 	class Key
 		def initialize(args)			
@@ -317,9 +319,15 @@ module Tones
 		end
 		def relative? (other)
 		end
-		
+
 	end
-	
+	# Class ChromaticScale
+	# Create a scale of 12 semitones comprised only of  nested halftones 
+	# starting at root
+	# this is the foundation scale for computing other scales as well as chords
+	# === you shouldn't use this Class directly
+
+
 	class ChromaticScale
 		include Comparable
 		attr_reader     :chromatic_scale,    #contains all the semitones (Notes) of a scale 
@@ -348,10 +356,10 @@ module Tones
 		def to_s
 			@chromatic_scale.inject('') {|mem, n| mem << n.note.to_s<<' '<< n.octave.to_s<<', ' }			
 		end 
-		
+
 		def name
-		    "#{@root} #{octave}" 
-	    end
+			"#{@root} #{octave}" 
+		end
 	end # of class
 
 	# Class Chord
@@ -406,18 +414,18 @@ module Tones
 			transposed_note =Note.new(@root, @octave).at_interval(semitone)		
 			Chord.new(transposed_note.note, transposed_note.octave, @type, @inversion)
 		end
-		
+
 		alias + transpose
-		
+
 		def to_a
 			@notes
 		end
-		
+
 		def [](i)
-		    raise ArrayOutOfBoundsError, E__M[:array_out_of_bounds_error] unless (0..((@notes.length )-1)).include? i
+			raise ArrayOutOfBoundsError, E__M[:array_out_of_bounds_error] unless (0..((@notes.length )-1)).include? i
 			@notes[i]
 		end
-		
+
 		def to_s
 			@notes.inject(('')) { |mem, n| mem <<n.note.to_s<<n.octave.to_s<<' ' }
 		end
@@ -426,12 +434,12 @@ module Tones
 			"#{@root}#{@octave} #{(@type).to_s.capitalize} inversion: #{@inversion}"
 		end
 	end #of Chord
-	
-    #
-    #
-    #
-    #
-    #
+
+	#
+	#
+	#
+	#
+	#
 	class   Scale <  ChromaticScale
 
 		attr_reader :notes, :mode
@@ -460,23 +468,23 @@ module Tones
 		def each
 			@notes.each { |e| yield e  }
 		end
-		
+
 		def to_a
 			@notes
 		end
 
-        def [](i)
-            raise ArrayOutOfBoundsError, E__M[:array_out_of_bounds_error] unless (0..((@notes.length )-1)).include? i
-            @notes[i]
-        end
-		
+		def [](i)
+			raise ArrayOutOfBoundsError, E__M[:array_out_of_bounds_error] unless (0..((@notes.length )-1)).include? i
+			@notes[i]
+		end
+
 		def transpose semitone 
 			transposed_note =Note.new(@root, @octave).at_interval(semitone)		
 			Scale.new(transposed_note.note, transposed_note.octave, @mode)		
 		end
 
-        alias + transpose
-        
+		alias + transpose
+
 		def to_s
 			@notes.inject('') { |mem, n | mem<< n.note.to_s<<n.octave.to_s<<' '  }
 		end 
@@ -487,5 +495,5 @@ module Tones
 	end #of Scale
 end
 
-#	TODO  implement relative scale check == for cmajor/ a minor and return relative
+
 

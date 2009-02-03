@@ -18,7 +18,7 @@ class TestTones < Test::Unit::TestCase
 
 	def test_notes
 	    assert(@c1.interval(@g1) == 7, "A fith apart")
-	    assert(@c1.interval(Note.new("f#", 2))== 18, "a Flat fith and an octave")
+	    assert(@c1.interval(Note.new(Fs, 2))== 18, "a Flat fith and an octave")
 	    assert(@c1.interval(@b0) == -1, 'One semitone')
 	    assert(@c1.interval(Note.new(G, 0)) == -5, "Fouth below.")
 		assert(@c1.prev == @b0, "those should be the same notes")
@@ -33,14 +33,26 @@ class TestTones < Test::Unit::TestCase
 		assert_raise(Tones::OctaveError) {Note.new(Cs, -5)  }
 		assert_raise(TypeError) { @c1 + 5.2 }
 		assert_raise(TypeError) { @c1 + "Yes" }
-
+		#array access
 		assert(@c1[0] == "C", "C at index 0")
 		assert(@b0[:octave] == 0, "Octave is 0")
 		assert_raise(ArrayOutOfBoundsError) {@b0[8]} 
 		assert(@c1.to_a == [@c1], "to_a failed.")               # well! hummm!! ok!!! Sorry
 		
-		assert_equal(@cflat ,Note.new(B, 5))
+		assert_equal(@c1[2], 0)
+		assert_equal(Note.new( E, 3)[:value], 4)
 		
+		assert_equal(@cflat ,Note.new(B, 5))
+		# test indexing
+		assert_equal(@b0.value, 11)
+		assert_equal(Note.new(E,2).index, 4)
+	end
+	
+	def test_synonyms
+		assert_equal(Note.new(Bs,3), Note.new(C,3))
+		assert_nothing_raised(Exception) { Note.new(Es,2) }
+		#low level
+		#assert_equal(@c1.synonym, Note.new('b#', 1))
 	end
 
 	def test_chords
