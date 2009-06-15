@@ -343,7 +343,52 @@ module Tones
 	
 		def name; "#{@root} #{octave}";end
 	end 
+	
+	class   Scale <  ChromaticScale
 
+		attr_reader :notes, :mode
+
+		private
+
+		def initialize ( root, octave,  mode = :chromatic) 
+			super(root, octave)
+			@notes = Array.new()     
+			@mode = mode         
+			case @mode                                                   
+			when :chromatic    
+				@notes = @chromatic_scale  
+			else 
+				modalScaleFromKey!(@root, @octave, @mode)
+			end 
+		end
+
+		def modalScaleFromKey!(root, octave, mode)
+			formulas = SCALES[mode]                                    
+			formulas.each {|d| @notes<< @chromatic_scale[d]} 
+		end
+
+		public
+
+		def each; @notes.each { |e| yield e  };end
+
+		def to_a;@notes; end
+
+		def [](i)
+			raise ArrayOutOfBoundsError, E__M[:array_out_of_bounds_error] unless (0..((@notes.length )-1)).include? i
+			@notes[i]
+		end
+
+		def transpose semitone 
+			transposed_note =Note.new(@root, @octave).at_interval(semitone)		
+			Scale.new(transposed_note.note, transposed_note.octave, @mode)		
+		end
+
+		alias + transpose
+
+		def to_s;@notes.inject('') { |mem, n | mem<< n.note.to_s<<n.octave.to_s<<' '  };end 
+
+		def name;"#{@root}#{@octave} #{@mode}";end
+	end   #of Scale
 	# Class Chord
 	# The chord is derived from it's chromatic scale on 
 	# which we applied a possibly inverted formula
@@ -414,51 +459,7 @@ module Tones
 	#
 	#
 	#
-	class   Scale <  ChromaticScale
 
-		attr_reader :notes, :mode
-
-		private
-
-		def initialize ( root, octave,  mode = :chromatic) 
-			super(root, octave)
-			@notes = Array.new()     
-			@mode = mode         
-			case @mode                                                   
-			when :chromatic    
-				@notes = @chromatic_scale  
-			else 
-				modalScaleFromKey!(@root, @octave, @mode)
-			end 
-		end
-
-		def modalScaleFromKey!(root, octave, mode)
-			formulas = SCALES[mode]                                    
-			formulas.each {|d| @notes<< @chromatic_scale[d]} 
-		end
-
-		public
-
-		def each; @notes.each { |e| yield e  };end
-
-		def to_a;@notes; end
-
-		def [](i)
-			raise ArrayOutOfBoundsError, E__M[:array_out_of_bounds_error] unless (0..((@notes.length )-1)).include? i
-			@notes[i]
-		end
-
-		def transpose semitone 
-			transposed_note =Note.new(@root, @octave).at_interval(semitone)		
-			Scale.new(transposed_note.note, transposed_note.octave, @mode)		
-		end
-
-		alias + transpose
-
-		def to_s;@notes.inject('') { |mem, n | mem<< n.note.to_s<<n.octave.to_s<<' '  };end 
-
-		def name;"#{@root}#{@octave} #{@mode}";end
-	end   #of Scale
 	end
 
 
