@@ -1,9 +1,9 @@
 fingers
 
-Ruby libray for calculating fingerings for scales and chords on stringed instruments.
+Ruby libray for fingerings for scales and chords on stringed instruments.
 Includes various "touchguitar" tunings as well as regular and new standard guitar tuning, bass, banjo , violin etc
 
-include tones, a ruby lib for scales and chords
+include tones, a ruby lib for easy scales and chords
 
 
 

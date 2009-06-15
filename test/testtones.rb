@@ -17,10 +17,10 @@ class TestTones < Test::Unit::TestCase
 	end
 
 	def test_notes
-	    assert(@c1.interval(@g1) == 7, "A fith apart")
-	    assert(@c1.interval(Note.new(Fs, 2))== 18, "a Flat fith and an octave")
-	    assert(@c1.interval(@b0) == -1, 'One semitone')
-	    assert(@c1.interval(Note.new(G, 0)) == -5, "Fouth below.")
+	  assert(@c1.interval(@g1) == 7, "A fith apart")
+	  assert(@c1.interval(Note.new(Fs, 2))== 18, "a Flat fith and an octave")
+	  assert(@c1.interval(@b0) == -1, 'One semitone')
+	  assert(@c1.interval(Note.new(G, 0)) == -5, "Fouth below.")
 		assert(@c1.prev == @b0, "those should be the same notes")
 		assert(@b0.succ == @c1, "those should be the same notes")
 		assert(@c1.at_interval(7)== Note.new(G,1), "G is the fith of C.")
