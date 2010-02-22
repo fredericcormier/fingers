@@ -57,8 +57,8 @@ puts c
 c.invert!(FITH)
 Note.new 'c', 15
 rescue => e
-    puts " Some Errors"
-    puts e
+    puts " Some Errors: #{e}"
+#    puts e
     
 end
 puts c
