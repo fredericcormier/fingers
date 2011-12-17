@@ -73,7 +73,6 @@ module Instrument
         end
         # name is inherited from ChromaticScale.name
     end	
-
     # An Instrument is an Array of "num_of_strings" strings.(thus an array of array).
     # We first load the tuning by setting the notes at fret "0"
     # then we create new Strings("chromatic scale") according to the tuning
