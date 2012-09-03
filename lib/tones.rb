@@ -50,8 +50,8 @@ module Tones
 	NO_NOTE = [X].freeze
 
 	#this will not be needed I think
-	SYNONYMS = [%w[C 	B#],%w[C# 	Db],%w[D 	D],%w[D# 	Eb],%w[E 	Fb],%w[F 	E#],
-	%w[F# 	Gb],%w[G 	G],%w[G# 	Ab],%w[A 	A],%w[A# 	Bb], %w[B 	Cb]].freeze
+    # SYNONYMS = [%w[C     B#],%w[C#     Db],%w[D     D],%w[D#     Eb],%w[E     Fb],%w[F     E#],
+    # %w[F#     Gb],%w[G     G],%w[G#     Ab],%w[A     A],%w[A#     Bb], %w[B     Cb]].freeze
 
 
 
@@ -62,12 +62,12 @@ module Tones
 	CHROM_SCALE_LENGTH = 36     
 
 	# chord inversions                 
-	NONE    = 0
-	FIRST   = 1
-	SECOND  = 2   
-	THIRD   = 3
-	FOURTH  = 4 
-	FITH	= 5  
+	INVERSION_NONE    = 0
+	INVERSION_FIRST   = 1
+	INVERSION_SECOND  = 2   
+	INVERSION_THIRD   = 3
+	INVERSION_FOURTH  = 4 
+	INVERSION_FITH	= 5  
 
 	TRIAD       =   [:major, :minor, :sus4, :diminished, :augmented ]
 
@@ -398,13 +398,13 @@ module Tones
 		#
 		# Examples
 		# 		cmaj = Tones::Chord 'c', 1, :major 								# => C1 E1 G1
-		#		cmaj = Tones::Chord.new('c', 1, :major, Tones::SECOND)			# => G1 C2 E2	
+		#		cmaj = Tones::Chord.new('c', 1, :major, Tones::INVERSION_SECOND)			# => G1 C2 E2	
 
 
 		class Chord < ChromaticScale
 			attr_reader :notes, :type, :inversion 
 
-			def initialize(root, octave, type, inversion = Tones::NONE)   
+			def initialize(root, octave, type, inversion = Tones::INVERSION_NONE)   
 				super(root, octave)               
 				@type = type				
 				self.invert!(inversion)
@@ -415,7 +415,7 @@ module Tones
 			# do not access or chain a call to this as the method returns an array (the inverted formula)
 			# Examples of use
 			#  			c = Chord.new ('c', 1, :major)
-			# 			c.invert!(Tones::SECOND)
+			# 			c.invert!(Tones::INVERSION_SECOND)
 			# 			c.do_whatever_you_want (now)
 			# =begin
 			#	TODO  turn this into a private method and write  public invert that returns a new chord

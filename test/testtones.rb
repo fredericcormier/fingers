@@ -8,7 +8,7 @@ class TestTones < Test::Unit::TestCase
 		@c1     		= Note.new C, 1
 		@g1             = Note.new G, 1
 		@b0     		= Note.new B, 0
-		@cmaj1_inv2  	= Tones::Chord.new(C, 1, :major, Tones::SECOND)			# => G1 C2 E2
+		@cmaj1_inv2  	= Tones::Chord.new(C, 1, :major, Tones::INVERSION_SECOND)			# => G1 C2 E2
 		@amaj			= Chord.new A, 1, :major
 		@cmaj			= Chord.new C, 2, :major
 		@fsharpMixo     = Scale.new Fs, 2, :mixolydian
