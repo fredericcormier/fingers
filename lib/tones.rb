@@ -204,7 +204,7 @@ module Tones
 		# to create a note, the first argument is either the note as string ie "c#"
 		# or a Constant in  C, Cs, D, Ds, E, F, Fs, G, Gs, A, As, B, Bs, Db, Eb, Fb, Es, Gb, Ab, Bb, Cb 
 		# the usage of constants is of course encouraged . it also gives you access to flats ( Db )
-		# Cs stands for C sharp since "#" without quotes would trigger a commnent
+		# Cs stands for C sharp since "#" without quotes would result in a commnent
 		# Examples
 		# 		puts csharp = Note.new( 'c#', 1) 				# => C# 1   
 		# or    puts csharp = Note.new Cs, 1                    # => C# 1
@@ -269,7 +269,7 @@ module Tones
 				else raise ArrayOutOfBoundsError, E__M[:array_out_of_bounds_error]
 				end
 			end
-			# returns the note a interval
+			# returns the note at interval
 			# ex: c.at_interval(7) #=> g
 			def at_interval(i)
 				raise TypeError, "Integer expected" unless i.is_a? Fixnum
@@ -318,7 +318,7 @@ module Tones
 		# Create a scale of 12 semitones comprised only of  nested halftones 
 		# starting at root
 		# this is the foundation scale for computing other scales as well as chords
-		# === you shouldn't use this Class directly
+		# === DO NOT use this Class directly
 		#--------------------------------------------------------------------------------------------------
 
 		class ChromaticScale
