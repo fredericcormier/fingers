@@ -71,8 +71,7 @@ module Tones
 
 	TRIAD       =   [:major, :minor, :sus4, :diminished, :augmented ]
 
-	QUAD        =   [:major_7, :minor_7, :dominant_7, :seventh_sus4, :major_6, :minor_6,
-		:half_diminished_7,:diminished_7, :augmented_7, :minor_major ]
+	QUAD        =   [:major_7, :minor_7, :dominant_7, :seventh_sus4, :major_6, :minor_6, :half_diminished_7,:diminished_7, :augmented_7, :minor_major ]
 
 		QUINTUPLE   =   [:major_9, :minor_9, :major_6_9, :minor_6_9, :ninth ]
 
